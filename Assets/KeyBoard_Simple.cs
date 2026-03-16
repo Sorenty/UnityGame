@@ -8,6 +8,7 @@ public class KeyBoard_Simple : MonoBehaviour
 
 
     // Start is called before the first frame update
+
     float x, y;
     Rigidbody2D vig;
     Animator anim;
