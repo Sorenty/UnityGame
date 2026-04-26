@@ -7,17 +7,27 @@ public class MenuController : MonoBehaviour
     public GameObject mainPanel;
     public GameObject settingsPanel;
 
+    public Slider musicVolumeSlider;
     public Slider sensitivitySlider;
     public Toggle fullscreenToggle;
 
     void Start()
     {
-        // Загружаем сохранённые значения
+        LoadSettings();
+        ApplySettingsToUI();
+    }
+
+    void LoadSettings()
+    {
         GameSettings.mouseSensitivity = PlayerPrefs.GetFloat("Sensitivity", 0.5f);
-        Debug.Log("Sens: " + GameSettings.mouseSensitivity);
         GameSettings.fullscreen = PlayerPrefs.GetInt("Fullscreen", 1) == 1;
-        Debug.Log("Sens: " + GameSettings.fullscreen);
-        // Устанавливаем значения в UI
+
+        Debug.Log("Sens: " + GameSettings.mouseSensitivity);
+        Debug.Log("Fullscreen: " + GameSettings.fullscreen);
+    }
+
+    void ApplySettingsToUI()
+    {
         if (sensitivitySlider != null)
         {
             sensitivitySlider.value = GameSettings.mouseSensitivity;
@@ -30,7 +40,56 @@ public class MenuController : MonoBehaviour
             fullscreenToggle.onValueChanged.AddListener(SaveFullscreen);
         }
 
+        float music = PlayerPrefs.GetFloat("MusicVolume", 0.3f);
+
+        if (musicVolumeSlider != null)
+        {
+            musicVolumeSlider.value = music;
+            musicVolumeSlider.onValueChanged.AddListener(SetMusicVolume);
+        }
+
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.SetMusicVolume(music);
+
         Screen.fullScreen = GameSettings.fullscreen;
+    }
+
+    //ВАЖНО: теперь UI обновляется при каждом открытии меню
+    public void OpenSettings()
+    {
+        mainPanel.SetActive(false);
+        settingsPanel.SetActive(true);
+
+        RefreshUI();
+    }
+
+    void RefreshUI()
+    {
+        if (sensitivitySlider != null)
+            sensitivitySlider.SetValueWithoutNotify(GameSettings.mouseSensitivity);
+
+        if (fullscreenToggle != null)
+            fullscreenToggle.SetIsOnWithoutNotify(GameSettings.fullscreen);
+
+        float music = PlayerPrefs.GetFloat("MusicVolume", 0.3f);
+
+        if (musicVolumeSlider != null)
+            musicVolumeSlider.SetValueWithoutNotify(music);
+    }
+
+    public void CloseSettings()
+    {
+        settingsPanel.SetActive(false);
+        mainPanel.SetActive(true);
+    }
+
+    public void SetMusicVolume(float value)
+    {
+        PlayerPrefs.SetFloat("MusicVolume", value);
+        PlayerPrefs.Save();
+
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.SetMusicVolume(value);
     }
 
     public void SaveSensitivity(float value)
@@ -52,19 +111,7 @@ public class MenuController : MonoBehaviour
 
     public void StartGame()
     {
-        SceneManager.LoadScene("1"); // Убедись, что имя сцены верное
-    }
-
-    public void OpenSettings()
-    {
-        mainPanel.SetActive(false);
-        settingsPanel.SetActive(true);
-    }
-
-    public void CloseSettings()
-    {
-        settingsPanel.SetActive(false);
-        mainPanel.SetActive(true);
+        SceneManager.LoadScene("1");
     }
 
     public void ExitGame()

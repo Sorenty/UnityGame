@@ -5,55 +5,65 @@ using UnityEngine.UI;
 
 public class KeyBoard_Simple : MonoBehaviour
 {
+    // ===== VFX =====
+    public ParticleSystem pickupVfxPrefab;
+    public ParticleSystem chopVfxPrefab;
+    public ParticleSystem jumpVfxPrefab;
 
-
-    // Start is called before the first frame update
+    // ===== AUDIO =====
+    public AudioSource sfxSource;
+    public AudioClip chopSound;
+    public AudioClip pickupSound;
 
     float x, y;
     Rigidbody2D vig;
     Animator anim;
+
     public int health;
     bool isground;
+
     public int num_of_eat_hp;
     public int tree;
     public int lestva;
+
     public ItemSpawner spawner;
+
     Vector3 lastHealthPosition;
     bool haveAxe;
-    void Start() //Метод-процедура 
+
+    void Start()
     {
-        //Create a value for physic Body in 2 2D
         num_of_eat_hp = 0;
         vig = GetComponent<Rigidbody2D>();
         x = 60F;
         anim = GetComponent<Animator>();
+
         health = 100;
         tree = 0;
         lestva = 0;
+
         haveAxe = false;
         isground = true;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        Vector2 vel = vig.linearVelocity; // сохраняем текущую вертикальную скорость
+        Vector2 vel = vig.linearVelocity;
 
         if (Input.GetKey(KeyCode.D))
         {
-            vel.x = x; // движение вправо
+            vel.x = x;
             vig.linearVelocity = vel;
             anim.Play("Vpravo");
         }
         else if (Input.GetKey(KeyCode.A))
         {
-            vel.x = -x; // движение влево
+            vel.x = -x;
             vig.linearVelocity = vel;
             anim.Play("Vlevo");
         }
         else
         {
-            // если не нажимаем A/D — оставляем x-скорость
             vel.x = 0;
             vig.linearVelocity = vel;
             anim.Play("Stoit");
@@ -61,20 +71,45 @@ public class KeyBoard_Simple : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space) && isground)
         {
-            Vector2 Force = new Vector2(0, 15f); // слабее прыжок
+            Vector2 Force = new Vector2(0, 15f);
             vig.AddForce(Force, ForceMode2D.Impulse);
         }
     }
 
+    void SpawnVfx(ParticleSystem prefab, Vector3 position)
+    {
+        if (prefab == null)
+        {
+            Debug.LogWarning("VFX prefab не назначен");
+            return;
+        }
+
+        ParticleSystem vfx = Instantiate(prefab, position, Quaternion.identity);
+        vfx.Play();
+
+        Destroy(vfx.gameObject, 2f);
+    }
+
+    void PlaySound(AudioClip clip)
+    {
+        if (sfxSource != null && clip != null)
+        {
+            sfxSource.PlayOneShot(clip);
+        }
+    }
 
     void OnTriggerStay2D(Collider2D coll)
     {
+        // ===== HEALTH PACK =====
         if (coll.gameObject.tag == "Health pack")
         {
             print("This is health pack!");
 
-            Vector3 spawnPos = coll.transform.position;
             lastHealthPosition = coll.transform.position;
+
+            SpawnVfx(pickupVfxPrefab, coll.transform.position);
+            PlaySound(pickupSound);
+
             Destroy(coll.gameObject);
 
             health += 50;
@@ -82,32 +117,56 @@ public class KeyBoard_Simple : MonoBehaviour
 
             Invoke(nameof(RespawnHealth), 10f);
         }
+
+        // ===== AXE =====
         if (coll.gameObject.tag == "Axe")
         {
             print("I have found axe!");
+
+            SpawnVfx(pickupVfxPrefab, coll.transform.position);
+            PlaySound(pickupSound);
+
             Destroy(coll.gameObject);
             haveAxe = true;
         }
+
+        // ===== TREE =====
         if ((haveAxe) && (coll.gameObject.tag == "tree") && (Input.GetMouseButtonDown(0)))
         {
             print("I am destroying this tree!");
+
+            Vector3 pos = coll.bounds.center;
+            pos.y = coll.bounds.min.y;
+
+            SpawnVfx(chopVfxPrefab, pos);
+            PlaySound(chopSound);
+
             Destroy(coll.gameObject);
-            tree = tree + 10;
+            tree += 10;
         }
+
+        // ===== TREE1 =====
         if ((haveAxe) && (coll.gameObject.tag == "tree1") && (Input.GetMouseButtonDown(0)))
         {
             print("I am destroying this tree1!");
-            Destroy(coll.gameObject);
-            tree = tree + 10;
-            lestva = lestva + 10;
 
+            Vector3 pos = coll.bounds.center;
+            pos.y = coll.bounds.min.y;
+
+            SpawnVfx(chopVfxPrefab, pos);
+            PlaySound(chopSound);
+
+            Destroy(coll.gameObject);
+            tree += 10;
+            lestva += 10;
         }
+
         if (coll.gameObject.tag == "Coster")
         {
-            health = health - 1;
-
+            health -= 1;
         }
     }
+
     void OnCollisionStay2D(Collision2D crash)
     {
         if (crash.gameObject.tag == "Map")
@@ -115,8 +174,8 @@ public class KeyBoard_Simple : MonoBehaviour
             isground = true;
             return;
         }
-        return;
     }
+
     void OnCollisionExit2D(Collision2D crash)
     {
         if (crash.gameObject.tag == "Map")
@@ -124,6 +183,7 @@ public class KeyBoard_Simple : MonoBehaviour
             isground = false;
         }
     }
+
     void RespawnHealth()
     {
         if (spawner != null)
@@ -132,5 +192,3 @@ public class KeyBoard_Simple : MonoBehaviour
         }
     }
 }
-
-    // vig:Rigitbody; a:longint; Rigitbody
