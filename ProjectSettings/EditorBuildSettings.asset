@@ -11,6 +11,14 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/1.unity
     guid: 00a1dabebf4ae1542afee6e2204f0229
+  - enabled: 1
+    path: Assets/Multiplayer_01.unity
+    guid: b20530f15f142614791a1f9e7999f169
+  - enabled: 1
+    path: Assets/XR_Basketball.unity
+    guid: 125155333f1093e4b9ee94fb5071deef
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 9fc4174245a2a1e4b97a02253f655f69, type: 2}
+    com.unity.xr.openxr.settings4: {fileID: 11400000, guid: 3b39463523d588144bafb490a6362a40, type: 2}
   m_UseUCBPForAssetBundles: 0

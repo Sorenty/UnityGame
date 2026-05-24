@@ -12,6 +12,7 @@ TagManager:
   - Coster
   - Axe
   - Health pack
+  - BasketBall
   layers:
   - Default
   - TransparentFX

@@ -5,12 +5,10 @@ using UnityEngine.UI;
 
 public class KeyBoard_Simple : MonoBehaviour
 {
-    // ===== VFX =====
     public ParticleSystem pickupVfxPrefab;
     public ParticleSystem chopVfxPrefab;
     public ParticleSystem jumpVfxPrefab;
 
-    // ===== AUDIO =====
     public AudioSource sfxSource;
     public AudioClip chopSound;
     public AudioClip pickupSound;
@@ -100,7 +98,6 @@ public class KeyBoard_Simple : MonoBehaviour
 
     void OnTriggerStay2D(Collider2D coll)
     {
-        // ===== HEALTH PACK =====
         if (coll.gameObject.tag == "Health pack")
         {
             print("This is health pack!");
@@ -118,7 +115,6 @@ public class KeyBoard_Simple : MonoBehaviour
             Invoke(nameof(RespawnHealth), 10f);
         }
 
-        // ===== AXE =====
         if (coll.gameObject.tag == "Axe")
         {
             print("I have found axe!");
@@ -130,7 +126,6 @@ public class KeyBoard_Simple : MonoBehaviour
             haveAxe = true;
         }
 
-        // ===== TREE =====
         if ((haveAxe) && (coll.gameObject.tag == "tree") && (Input.GetMouseButtonDown(0)))
         {
             print("I am destroying this tree!");
@@ -145,7 +140,6 @@ public class KeyBoard_Simple : MonoBehaviour
             tree += 10;
         }
 
-        // ===== TREE1 =====
         if ((haveAxe) && (coll.gameObject.tag == "tree1") && (Input.GetMouseButtonDown(0)))
         {
             print("I am destroying this tree1!");

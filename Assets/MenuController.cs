@@ -54,6 +54,15 @@ public class MenuController : MonoBehaviour
         Screen.fullScreen = GameSettings.fullscreen;
     }
 
+    public void OpenMultiplayer()
+    {
+        SceneManager.LoadScene("Multiplayer_01");
+    }
+
+    public void OpenXRGame()
+    {
+        SceneManager.LoadScene("XR_Basketball");
+    }
     //ВАЖНО: теперь UI обновляется при каждом открытии меню
     public void OpenSettings()
     {

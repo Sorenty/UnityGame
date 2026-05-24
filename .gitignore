@@ -97,3 +97,103 @@ InitTestScene*.unity*
 
 # Auto-generated scenes by play mode tests
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
+
+# ========== IDE Files ==========
+
+# Visual Studio Code
+.vscode/
+*.code-workspace
+
+# JetBrains Rider
+.idea/
+.idea_modules/
+*.sln.iml
+*.iws
+*.iml
+
+# Visual Studio / MonoDevelop
+bin/
+obj/
+.csproj.user
+*.csproj.user
+*.sln.DotSettings.user
+
+# ========== Operating System Files ==========
+
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+
+# Windows
+Thumbs.db
+Desktop.ini
+*.lnk
+
+# Linux
+.directory
+
+# ========== Build & Distribution ==========
+
+# Build artifacts
+/dist/
+/build/
+*.zip
+*.tar.gz
+*.rar
+
+# IL2CPP generated code
+/[Aa]ssets/Plugins/x86*
+/[Aa]ssets/Plugins/x64*
+/[Aa]ssets/Plugins/ARM*
+
+# ========== Cache & Temporary Files ==========
+
+# Particle systems backup
+*.psd
+*.psb
+*.psb.meta
+
+# Editor auto-save backups
+*.autosave
+*~
+
+# Package Manager caches
+/Packages/com.unity.*/
+.npmrc
+package-lock.json
+
+# ========== Project Specific ==========
+
+# Unity version selector - Temporary file
+/Temp/
+/obj/
+/Library/
+
+# User-generated files
+/Assets/1.meta
+/Assets/1.unity.meta
+/Assets/UpgradeLog*.htm
+
+# Mirror generated files (if any)
+/[Aa]ssets/Mirror/**/Generated*
+
+# Any local configuration files
+local.settings.json
+config.local.json
+
+# ========== Python & Tools ==========
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.so
+.Python
+
+# Backup files
+*.bak
+*.swp
+*.swo
